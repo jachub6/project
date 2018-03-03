@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>A Multiplayer Game</title>
+    <title>LASKA</title>
     <style>
       canvas {
         width: 800px;
@@ -8,12 +8,23 @@
         border: 5px solid black;
         cursor: url("img/cursor.png") 0 24, auto;
       }
+      a img{
+        height:50px;
+        position:fixed;
+        top:10;
+        left:10;
+        opacity:0.2;
+        transition: opacity 1s;
+      }
+      a img:hover{
+        opacity:1;
+      }
     </style>
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
     <canvas id="canvas"></canvas>
-    <input type="button" value="bffg" onclick="zmena();">
+    <a href="javascript: vymazat();"><img src=img/delete.png></a>
   </body>
   <script src="/static/game.js"></script>
 </html>

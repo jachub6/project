@@ -11,9 +11,19 @@ socket.on('mouse', function(data) {
           context.beginPath();
           context.moveTo(data.exx,data.exy);
           context.lineTo(data.x,data.y);
-          context.stroke();          
+          context.stroke();
+          console.log("rec");          
 });   
-
+socket.on("souradnice", function(data){
+ for(var i=0; i<data.x.length;i++)
+ {
+    //console.log("x "+data.x[i]+" y "+data.y[i]);
+    context.beginPath();
+    context.moveTo(data.exx[i],data.exy[i]);
+    context.lineTo(data.x[i],data.y[i]);
+    context.stroke();  
+ }
+});
 /*var mouseDown = false;
 
 document.body.onmousedown = function() { 
@@ -59,17 +69,28 @@ canvas.onmousemove = function(e) {
     var rect = canvas.getBoundingClientRect();
     var mx=e.clientX - rect.left;
     var my=e.clientY - rect.top;
+    
     vykreslit.x=mx;
     vykreslit.y=my;
     socket.emit("vykreslit", vykreslit);
     vykreslit.exx=mx;
     vykreslit.exy=my;
+    
+    context.strokeStyle = vykreslit.barva;
     context.lineTo(mx,my);
     context.stroke();
 
   }
 };
-canvas.onmouseup = function() {
+canvas.onmouseup = function(e) {
+  var rect = canvas.getBoundingClientRect();
+    var mx=e.clientX - rect.left;
+    var my=e.clientY - rect.top;
+   vykreslit.x=mx;
+    vykreslit.y=my;
+    vykreslit.exx=mx;
+    vykreslit.exy=my;
+  socket.emit("vykreslit", vykreslit);
   isDrawing = false;
 };
 
@@ -97,6 +118,8 @@ function handleStart(e){
   var my=touchY;
   vykreslit.exx=touchX;
   vykreslit.exy=touchY;
+  
+   context.strokeStyle = vykreslit.barva;
    context.beginPath();
   context.moveTo(mx,my);
   
@@ -122,10 +145,23 @@ function handleMove(e){
 
 function handleEnd(e){
   isDrawing = false;
+  getTouchPos(e);
+    var mx=touchX;
+    var my=touchY;
+  vykreslit.x=mx;
+    vykreslit.y=my;
+    vykreslit.exx=mx;
+    vykreslit.exy=my;
+  socket.emit("vykreslit", vykreslit);
   e.preventDefault();
 }
 
-function zmena()
+function vymazat()
 {
-  vykreslit.barva="red";
+  context.clearRect(0,0,canvas.width,canvas.height); 
+  socket.emit("vymazat");
 }
+
+socket.on("vymazat", function(){
+  context.clearRect(0,0,canvas.width,canvas.height); 
+});
