@@ -50,6 +50,9 @@ canvas.onmousedown = function(e) {
   var my=e.clientY - rect.top;
   vykreslit.exx=mx;
   vykreslit.exy=my;
+  context.beginPath();
+  context.moveTo(mx,my);
+  
 };
 canvas.onmousemove = function(e) {
   if (isDrawing) {
@@ -61,6 +64,8 @@ canvas.onmousemove = function(e) {
     socket.emit("vykreslit", vykreslit);
     vykreslit.exx=mx;
     vykreslit.exy=my;
+    context.lineTo(mx,my);
+    context.stroke();
 
   }
 };
@@ -92,6 +97,9 @@ function handleStart(e){
   var my=touchY;
   vykreslit.exx=touchX;
   vykreslit.exy=touchY;
+   context.beginPath();
+  context.moveTo(mx,my);
+  
   e.preventDefault();
 }
 
@@ -105,6 +113,8 @@ function handleMove(e){
     socket.emit("vykreslit", vykreslit);
     vykreslit.exx=mx;
     vykreslit.exy=my;
+    context.lineTo(mx,my);
+    context.stroke();
     e.preventDefault();
 
   }
