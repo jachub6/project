@@ -28,7 +28,7 @@ io.on('connection', function(socket) {
 
 io.on('connection', function(socket) {
   socket.on('vykreslit', function(data) {
-    io.emit("mouse", data);
+    socket.broadcast.emit("mouse", data);
   });
  
 });
