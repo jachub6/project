@@ -5,14 +5,23 @@ var canvas = document.getElementById('canvas');
 canvas.width = 800;
 canvas.height =600;
 var context = canvas.getContext('2d');
-
+var neprobiha=true;
 socket.on('mouse', function(data) {
-          context.strokeStyle = data.barva;
+      function checkFlag() {
+    if(isDrawing == true) {
+       window.setTimeout(checkFlag, 100); /* this checks the flag every 100 milliseconds*/
+    } else {
+      /* do something*/
+      context.strokeStyle = data.barva;
           context.beginPath();
           context.moveTo(data.exx,data.exy);
           context.lineTo(data.x,data.y);
           context.stroke();
-          console.log("rec");          
+          console.log("rec");
+    }
+}
+checkFlag();
+             
 });   
 socket.on("souradnice", function(data){
  for(var i=0; i<data.x.length;i++)
